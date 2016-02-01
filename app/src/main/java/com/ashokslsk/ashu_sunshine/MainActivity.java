@@ -8,6 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -71,6 +77,22 @@ public class MainActivity extends AppCompatActivity {
                     "Saturday - HELP TRAPPED IN WEATHERSTATION - 60/51",
                     "Sunday - Sunny - 80/68"
             };
+
+            List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastArray));
+
+            ArrayAdapter<String> mAdapter= new ArrayAdapter(
+                    //Passing cotext
+                    getActivity(),
+                    //Passing layout to inflate in listview
+                    R.layout.list_item_forecast,
+                    //Passing view id to be uses
+                    R.id.list_item_forecast_textview,
+                    //passing the mockdata
+                    weekForecast);
+
+
+            ListView ForeCastList = (ListView) rootView.findViewById(R.id.listview_forecast);
+            ForeCastList.setAdapter(mAdapter);
 
             return rootView;
         }
