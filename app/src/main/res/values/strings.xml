@@ -2,4 +2,5 @@
     <string name="app_name">Ashu-Sunshine</string>
     <string name="hello_world">Hello Sunshine</string>
     <string name="action_settings">Settings</string>
+    <string name="refresh_menu" translatable="false">refresh</string>
 </resources>
