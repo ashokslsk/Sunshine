@@ -1,5 +1,6 @@
 package com.ashokslsk.ashu_sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,6 +112,17 @@ public class ForeCastFragment extends Fragment {
 
         ListView ForeCastList = (ListView) rootView.findViewById(R.id.listview_forecast);
         ForeCastList.setAdapter(mAdapter);
+
+        ForeCastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = mAdapter.getItem(position);
+                Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(getActivity(),DetailActivity.class));
+
+            }
+        });
 
 
 
