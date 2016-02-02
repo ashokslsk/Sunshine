@@ -3,9 +3,13 @@ package com.ashokslsk.ashu_sunshine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +23,7 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetailFragment())
                     .commit();
         }
     }
@@ -54,9 +58,38 @@ public class DetailActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class DetailFragment extends Fragment {
 
-        public PlaceholderFragment() {
+
+        private static final String TAG = "DetailFragment";
+        private static final String FORECAST_SHARE_HASHTAG = "#Ashu-SunshineApp";
+        private String mForecastStr;
+
+
+        public DetailFragment() {
+
+            setHasOptionsMenu(true);
+
+        }
+
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detailfragment, menu);
+
+            //Tie the share item menu
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+
+            //Get the provider and hold onto it to actionbar
+            ShareActionProvider mShareActionProvider =
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+            //Attach an intent to the sharedprovider
+            if(mShareActionProvider != null){
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }else{
+                Log.d(TAG, "onCreateOptionsMenu: share action provider is null");
+            }
         }
 
         @Override
@@ -67,11 +100,20 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             if (intent!=null && intent.hasExtra(Intent.EXTRA_TEXT)){
-                String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView)rootView.findViewById(R.id.forecast_info)).setText(forecast);
+                mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+                ((TextView)rootView.findViewById(R.id.forecast_info)).setText(mForecastStr);
             }
 
             return rootView;
+        }
+
+
+        private Intent createShareForecastIntent(){
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,mForecastStr +"/n" +FORECAST_SHARE_HASHTAG);
+            return shareIntent;
         }
     }
 }
