@@ -30,6 +30,42 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart() called with: " + "");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause() called with: " + "");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy() called with: " + "");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop() called with: " + "");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(TAG, "onRestart() called with: " + "");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume() called with: " + "");
+        super.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
