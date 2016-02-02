@@ -1,5 +1,6 @@
 package com.ashokslsk.ashu_sunshine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent SettingScreen = new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(SettingScreen);
             return true;
         }
 

@@ -1,9 +1,11 @@
 package com.ashokslsk.ashu_sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -30,8 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by ashok.kumar on 01/02/16.
@@ -62,14 +62,20 @@ public class ForeCastFragment extends Fragment {
 
         int id = item.getItemId();
         if(id == R.id.action_refresh){
+            UpdateWeather();
 
-            //Execute in background
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("560057");
 
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void UpdateWeather() {
+        //Execute in background
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        weatherTask.execute(location);
     }
 
     /* The date/time conversion code is going to be moved outside the asynctask later,
@@ -77,7 +83,11 @@ public class ForeCastFragment extends Fragment {
        */
 
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpdateWeather();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,18 +96,18 @@ public class ForeCastFragment extends Fragment {
 
 
 
-        //Fake mockdata
-        String[] forecastArray = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/40",
-                "Wednesday - cloudy - 72/63",
-                "Thursday - Asteroids - 75/65",
-                "Friday - Heavy Rain - 65/56",
-                "Saturday - HELP TRAPPED IN WEATHERSTATION - 60/51",
-                "Sunday - Sunny - 80/68"
-        };
+//        //Fake mockdata
+//        String[] forecastArray = {
+//                "Today - Sunny - 88/63",
+//                "Tomorrow - Foggy - 70/40",
+//                "Wednesday - cloudy - 72/63",
+//                "Thursday - Asteroids - 75/65",
+//                "Friday - Heavy Rain - 65/56",
+//                "Saturday - HELP TRAPPED IN WEATHERSTATION - 60/51",
+//                "Sunday - Sunny - 80/68"
+//        };
 
-        List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastArray));
+//        List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastArray));
 
         mAdapter = new ArrayAdapter(
                 //Passing cotext
@@ -107,7 +117,7 @@ public class ForeCastFragment extends Fragment {
                 //Passing view id to be uses
                 R.id.list_item_forecast_textview,
                 //passing the mockdata
-                weekForecast);
+                new ArrayList<String>());
 
 
         ListView ForeCastList = (ListView) rootView.findViewById(R.id.listview_forecast);
@@ -119,7 +129,9 @@ public class ForeCastFragment extends Fragment {
                 String forecast = mAdapter.getItem(position);
                 Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(getActivity(),DetailActivity.class));
+                Intent detailsScrreen = new Intent(getActivity(),DetailActivity.class);
+                detailsScrreen.putExtra(Intent.EXTRA_TEXT,forecast);
+                startActivity(detailsScrreen);
 
             }
         });

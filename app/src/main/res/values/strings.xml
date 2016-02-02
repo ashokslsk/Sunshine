@@ -3,4 +3,9 @@
     <string name="hello_world">Hello Sunshine</string>
     <string name="action_settings">Settings</string>
     <string name="refresh_menu" translatable="false">refresh</string>
+    <string name="pre_location_label">Location</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_default" translatable="false">94043</string>
+
+
 </resources>
