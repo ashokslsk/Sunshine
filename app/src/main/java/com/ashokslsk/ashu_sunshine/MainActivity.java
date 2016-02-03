@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d(TAG, "onCreate() called with: ");
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ForeCastFragment())
@@ -53,11 +55,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    @Override
-    protected void onRestart() {
-        Log.d(TAG, "onRestart() called with: " + "");
-        super.onRestart();
-    }
 
     @Override
     protected void onResume() {
